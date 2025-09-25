@@ -4,7 +4,7 @@
 1. [Where can I find shared files and resources?](#Where-can-I-find-shared-files-and-resources)
 2. [Where can I find up-to-date files for local ancestry inference](#Where-can-I-find-up-to-date-files-for-local-ancestry-inference)
 3. [Which genome assembly and annotation file should I use?](#Which-genome-assembly-and-annotation-file-should-I-use)
-4. [Where can I find i5 i7 barcode files?](#Where-can-I-find-i5-i7-barcode-files-)
+4. [Where can I find i5 and i7 barcode files?](#Where-can-I-find-i5-i7-barcode-files-)
   - 4.1 [Tn5 libraries](#Tn5-libraries)
   - 4.2 [Quail libraries](#Quail-libraries)
   - 4.3 [RNAseq libraries](#RNAseq-libraries)
@@ -53,7 +53,7 @@ and the annotation files are:
 
 `/home/groups/schumer/shared_bin/shared_resources/Xiphophorus_maculatus_LG.Xipmac4.4.2.81.gtf`
 
-## Where can I find i5/i7 barcode files?
+## Where can I find i5 and i7 barcode files?
 
 ### Tn5 libraries
 For Tn5 libraries, i5 barcode sequences can be found in box under this path:
