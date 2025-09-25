@@ -85,7 +85,7 @@ This allocates a core with 4GB memory for one hour to you. If you want your sess
 
 Below is a list of slurm partitions available to all Sherlock users for batch jobs:
 
-![](Partitions.png)
+![](images/Partitions.png)
 
 There are 2 nodes with 1.5TB of RAM. Use these if your job needs more than 64 GB of RAM by adding
 
