@@ -4,13 +4,13 @@
 1. [Where can I find shared files and resources?](#Where-can-I-find-shared-files-and-resources)
 2. [Where can I find up-to-date files for local ancestry inference](#Where-can-I-find-up-to-date-files-for-local-ancestry-inference)
 3. [Which genome assembly and annotation file should I use?](#Which-genome-assembly-and-annotation-file-should-I-use)
-4. [Where can I find i5/i7 barcode files?](#Where-can-I-find-i5-i7-barcode-files)
+4. [Where can I find i5/i7 barcode files?](#Where-can-I-find-i5-i7-barcode-files-)
   - 4.1 [Tn5 libraries](#Tn5-libraries)
   - 4.2 [Quail libraries](#Quail-libraries)
   - 4.3 [RNAseq libraries](#RNAseq-libraries)
 5. [Which recombination map should I use?](#Which-recombination-map-should-I-use)
-6. [Where can I find previously run ancestry.tsv files?](#Where-can-I-find-previously-run-ancestry.tsv-files)
-7. [Where can I find the X. birchmanni genome split into windows?](#Where-can-I-find-the-X.-birchmanni-genome-split-into-windows)
+6. [Where can I find previously run ancestry.tsv files?](#Where-can-I-find-previously-run-ancestry-tsv-files)
+7. [Where can I find the X. birchmanni genome split into windows?](#Where-can-I-find-the-X-birchmanni-genome-split-into-windows)
 
 ## Where can I find shared files and resources?
 Most genome assemblies, recombination maps, simulation tools, annotation files, etc can be found in our shared_resources folder on Sherlock (also available in Dropbox):
