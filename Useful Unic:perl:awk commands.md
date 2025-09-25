@@ -30,7 +30,7 @@ In this example, column 10:
 
 ```cut -f 10 --complement filename > newfile```
 
-###Use awk to duplicate or modify a column
+### Use awk to duplicate or modify a column
 
 Duplicate the second column of a file:
 
@@ -40,7 +40,7 @@ Rewrite the first column of a file as first column _ second column:
 
 ```awk -v OFS='\t' '$1=$1"_"$2' myfile > mynewfile```
 
-###Use awk to select rows
+### Use awk to select rows
 
 Select all rows where a particular column contains a certain word:
 
@@ -50,7 +50,7 @@ Select all rows where a particular column does not contain a certain word:
 
 ```awk -F"\t" '$2 !== "N" { print}' myfile > mynewfile```
 
-###Use perl to find and replace
+### Use perl to find and replace
 
 Find and replace an exact string match:
 
@@ -60,7 +60,7 @@ You can also find and replace with wild cards, etc:
 
 ```perl -pi -e 's/^[^_]*find/find/g' filename```
 
-###Split or shuffle your file
+### Split or shuffle your file
 
 Split your file into a set of files containing n lines (in this case 20):
 
@@ -70,11 +70,11 @@ Randomly sample n lines from your file:
 
 ```shuf -n 10000 myfile_name > my_sampled_file```
 
-###Count unique lines in a file
+### Count unique lines in a file
 
 ```cat myfile.txt | uniq | wc -l```
 
-###Sort a file numerically
+### Sort a file numerically
 
 In this example, sort using the value in the second column:
 
@@ -83,7 +83,7 @@ In this example, sort using the value in the second column:
 
 ## Useful commands for manipulating bam files
 
-###Calculate the average coverage of a bam file
+### Calculate the average coverage of a bam file
 
 ```module load biology
 module load samtools
@@ -92,6 +92,6 @@ samtools depth my_bam_file | awk '{sum+=$3} END { print sum/NR}'
 ```
 
 
-###Calculate the number of mapped reads in a bam file
+### Calculate the number of mapped reads in a bam file
 
 ```samtools view -c -F 260 my_bam_file```
