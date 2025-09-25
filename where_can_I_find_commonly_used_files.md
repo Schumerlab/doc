@@ -9,7 +9,7 @@
   - 4.2 [Quail libraries](#Quail-libraries)
   - 4.3 [RNAseq libraries](#RNAseq-libraries)
 5. [Which recombination map should I use?](#Which-recombination-map-should-I-use)
-6. [Where can I find previously run ancestry.tsv files?](#Where-can-I-find-previously-run-ancestry-tsv-files)
+6. [Where can I find previously run ancestry.tsv files?](#where-can-i-find-previously-run-ancestrytsv-files)
 7. [Where can I find the X. birchmanni genome split into windows?](#Where-can-I-find-the-X-birchmanni-genome-split-into-windows)
 
 ## Where can I find shared files and resources?
