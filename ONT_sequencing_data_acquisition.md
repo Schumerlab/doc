@@ -2,7 +2,7 @@
 
 ## Background
 
-The lab does 3 primary workflows:
+The lab does 3 primary workflows to achieve high quality, near T2T assemblies:
 
 [Ligation Sequencing Kit](https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION): For standard ONT protocols. Low DNA input requirements (1ug in 48ul), moderate read lengths (20-40kb N50s), and high throughput. Library prep takes ½ day (requires several bead cleanups + time to resuspend) and 24 hours sequencing for a high coverage swordtail genome (~30-40Gb data). You can expect ~100-150ish Gb data off a flowcell if you do washes.
 
@@ -25,7 +25,7 @@ While ONT says flowcells expire after 3 months, we’ve successfully sequenced u
 ### Flowcell reuse
 Flowcells can be washed and reused using the [wash protocol](https://nanoporetech.com/document/flow-cell-wash-kit-exp-wsh004?device=PromethION). After wash + storage buffer but before putting in fridge, run a flowcell check and add a sticker with the number of remaining pores. Also, fill out the flowcell spreadsheet. We save and reuse flowcells with > 500 pores. Flowcells should be stored in the storage bags in the 4C.
 
-**Note**: theoretically, the DNAse in the washmix gets rid of 99.9% of old DNA but we have not tested this. Not all analyses will be sensitive to contaminant DNA, but if yours are (eg genome assembly), consider using a flowcell that previously sequenced a diverged species (eg northern swordtail vs platyfish). With this level of divergence (2%, it should be very easy identify contaminants). More closely related species can be used too, but we recommend not using the same species. A formal de-contamination pipeline is in the works. Using the barcoding kit is another way to avoid contamination.
+**Note**: theoretically, the DNAse in the washmix gets rid of 99.9% of old DNA but we have not tested this. Not all analyses will be sensitive to contaminant DNA, but if yours are (eg genome assembly), consider using a flowcell that previously sequenced a diverged species (eg northern swordtail vs platyfish). With this level of divergence (2%), it should be very easy identify contaminants. More closely related species can be used too, but we recommend not using the same species. A formal de-contamination pipeline is in the works. Using the barcoding kit is another way to avoid contamination.
 
 ### P2 Solo 
 We have a P2 Solo, which can run 2 flowcells at once. This machine cost $25,000 so please be careful with it.
