@@ -38,8 +38,7 @@ The computer is a powerful/beautiful but finicky machine. This is mostly because
 ## Data acquisition and management
 
 ### File naming conventions
-MinKnow is fairly user friendly
-Please name your experiment with the following convention
+MinKnow is fairly user friendly. Please name your experiment with the following convention:
 
 YEARMODY_INITIALS_KIT[LSK/RSK/ULK]_experiment (**eg 20250925_TOD_LSK_xbir-fiberseq-brain**)
 
@@ -57,7 +56,7 @@ scp -r /media/4tb-data/minknow/data/20250925_TOD_LSK_xbir-fiberseq-brain/xbir-CO
 Eventually, we will figure out a system to back up all pod5 files to elm or some other long-term storage.
 
 ### Basecalling
-On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled).
+On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free).
 ```
 cd /path/to/scratch/dir/basecall/
 
@@ -75,3 +74,8 @@ After you basecall, please put the combined ubam and filtered fastq files in the
 ```
 cp xbir-COAC-S238-28-VIII-25-M01_LSK.dorado9.1_sup@v5.0.0_CpG.q10.* /oak/stanford/groups/schumer/data/Nanopore_data/
 ```
+
+### Analysis
+The output `<sample>.dorado9.1_sup@v5.0.0_CpG.q10.l5000.fastq.gz` file can be used as input to `hifiasm` (with the `--ont` option specified). The assembly workflow from this point on is basically the same as with hifi data.
+
+If you want to map reads to a reference, you can use `dorado aligner` to map the ubam or fastq.gz to an existing assembly.
