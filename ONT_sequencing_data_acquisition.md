@@ -56,7 +56,7 @@ scp -r /media/4tb-data/minknow/data/20250925_TOD_LSK_xbir-fiberseq-brain/xbir-CO
 Eventually, we will figure out a system to back up all pod5 files to elm or some other long-term storage.
 
 ### Basecalling
-On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free).
+On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free). By default, we filter the reads by q10 and length 5000bp in the fastq.gz.
 ```
 cd /path/to/scratch/dir/basecall/
 
@@ -76,6 +76,6 @@ cp xbir-COAC-S238-28-VIII-25-M01_LSK.dorado9.1_sup@v5.0.0_CpG.q10.* /oak/stanfor
 ```
 
 ### Analysis
-The output `<sample>.dorado9.1_sup@v5.0.0_CpG.q10.l5000.fastq.gz` file can be used as input to `hifiasm` (with the `--ont` option specified). The assembly workflow from this point on is basically the same as with hifi data.
+For genome assembly, the combined `<sample>.dorado9.1_sup@v5.0.0_CpG.q10.l5000.fastq.gz` file from basecalling can be used as input to `hifiasm` (with the `--ont` option specified). The assembly workflow from this point on is basically the same as with hifi data.
 
-If you want to map reads to a reference, you can use `dorado aligner` to map the ubam or fastq.gz to an existing assembly.
+If you want to map reads to a reference, you can use `dorado aligner` to map either the combined ubam or fastq.gz file to an existing assembly.
