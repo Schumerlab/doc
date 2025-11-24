@@ -6,9 +6,9 @@ The lab does 3 primary workflows to achieve high quality, near T2T assemblies:
 
 [Ligation Sequencing Kit](https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION): For standard ONT protocols. Low DNA input requirements (1ug in 48ul), moderate read lengths (20-40kb N50s), and high throughput. Library prep takes ½ day (requires several bead cleanups + time to resuspend) and 24 hours sequencing for a high coverage swordtail genome (~30-40Gb data). You can expect ~100-150ish Gb data off a flowcell if you do washes.
 
-[Rapid Sequencing Kit](https://nanoporetech.com/document/rapid-sequencing-sqk-rad114?device=PromethION): For quick and dirty sequencing. Very low DNA input requirements (100ng DNA in 10ul), moderate read lengths (10-25kb N50s), and low throughput. Library prep takes 1hr and 24 hours sequencing for a high coverage swordtail genome. You can expect ~50-80ish Gb data off a flowcell if you do washes. Ligation is generally preferred because more economical use of flowcells.
+[Rapid Sequencing Kit](https://nanoporetech.com/document/rapid-sequencing-sqk-rad114?device=PromethION): For quick and dirty sequencing. Very low DNA input requirements (100-150ng DNA in 10ul), moderate read lengths (10-25kb N50s), and low throughput. Library prep takes 1hr and 24 hours sequencing for a high coverage swordtail genome. You can expect ~50-80ish Gb data off a flowcell if you do washes. Ligation is generally preferred because more economical use of flowcells.
 
-[Ultralong Sequencing Kit](https://nanoporetech.com/document/ultra-long-dna-sequencing-kit-sqk-ulk114): For use cases involving very long reads. High DNA input requirements (10-40ug in 150+ ul), long read lengths (50-100kb N50), and low throughput. Library prep takes ½ day (plus 24 hours to resuspend) and 3 days of sequencing (with washes) for a high coverage swordtail genome. You can expect ~50-80ish Gb data off a flowcell if you do washes.
+[Ultralong Sequencing Kit](https://nanoporetech.com/document/ultra-long-dna-sequencing-kit-sqk-ulk114): For use cases necessitating very long reads. High DNA input requirements (10-40ug in 150+ ul), long read lengths (50-100kb N50), and low throughput. Library prep takes ½ day (plus 24 hours to resuspend) and 3 days of sequencing (with washes) for a high coverage swordtail genome. You can expect ~50-80ish Gb data off a flowcell if you do washes.
 
 ### Ordering reagents
 Put requests in Quartzy like usual, but procurement is through HHMI, who need to generate a PO, which takes time. Flowcells come in packs of 4 and kits come with enough reagents for 6 runs. We could try doing half reactions at some point.
@@ -31,7 +31,7 @@ Flowcells can be washed and reused using the [wash protocol](https://nanoporetec
 We have a P2 Solo, which can run 2 flowcells at once. This machine cost $25,000 so please be careful with it.
 
 ### Computer
-The computer is a powerful/beautiful but finicky machine. This is mostly because of what we’re asking it to do. It runs some of the latest Nvidia GPUs, but is on the Ubuntu 22.04 OS. This causes some problems with the drivers and prevents live basecalling. We currently run the sequencer without basecalling (outputting pod5 raw data) and then basecall on Sherlock. This precludes analyses requiring adaptive sampling. We will update to Ubuntu 24.04 soon, which will hopefully solve these problems. We’ve been getting help from Eric Campbell from IT when the issues are too complex for us to address. The computer has a UPS which prevents restarts after short power interruption, which messes up the drivers, and also has a wired ethernet connection.
+The computer is a powerful but finicky machine. This is mostly because of what we’re asking it to do. It has some of the latest Nvidia GPUs, but runs on the Ubuntu 22.04 OS. This causes some problems with the drivers and prevents live basecalling. We currently run the sequencer without basecalling (outputting pod5 raw data) and then basecall on Sherlock. This precludes analyses requiring adaptive sampling. We will update to Ubuntu 24.04 soon, which will hopefully solve these problems. We’ve been getting help from Eric Campbell from IT when the issues are too complex for us to address. The computer has a UPS which prevents restarts after short power interruption, which messes up the drivers, and also has a wired ethernet connection.
 
 **Note**: if you turn on the P2, but it doesn't light up and minknow doesn't see it, there might be a problem with the thunderbolt controller being enabled (BIOS menu). Restarting the computer might fix the issue.
 
@@ -68,7 +68,7 @@ dorado download --model dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 dorado download --model dna_r10.4.1_e8.2_400bps_sup@v5.0.0_5mCG_5hmCG@v3
 ```
 
-After this occurs the basecalling (in parallel) and merging the combined outputs.
+Run basecalling (in parallel), merge the bam outputs, and convert the combined bam to a fastq.
 ```
 cd /path/to/scratch/dir/basecall/
 
