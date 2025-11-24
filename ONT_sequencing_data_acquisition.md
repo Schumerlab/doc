@@ -57,6 +57,18 @@ Eventually, we will figure out a system to back up all pod5 files to elm or some
 
 ### Basecalling
 On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free). By default, we filter the reads by q10 and length 5000bp in the fastq.gz.
+
+`dorado` is installed in shared_bin. Dependencies and other useful tools can be easily installed in a conda environment. Finally, download the superaccurate models.
+```
+conda create -n nanopore -c bioconda -c conda-forge pod5 samtools seqkit
+conda activate nanopore
+
+cd /path/to/scratch/dir/basecall/
+dorado download --model dna_r10.4.1_e8.2_400bps_sup@v5.0.0
+dorado download --model dna_r10.4.1_e8.2_400bps_sup@v5.0.0_5mCG_5hmCG@v3
+```
+
+After this occurs the basecalling (in parallel) and merging the combined outputs.
 ```
 cd /path/to/scratch/dir/basecall/
 
