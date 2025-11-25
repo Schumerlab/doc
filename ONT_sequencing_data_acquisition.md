@@ -60,7 +60,7 @@ On sherlock, we run the dorado basecaller in the super accuracy mode (with modif
 
 `dorado` is installed in shared_bin. Dependencies and other useful tools can be easily installed in a conda environment. Finally, download the superaccurate models.
 ```
-conda create -n nanopore -c bioconda -c conda-forge pod5 samtools seqkit
+conda create -n nanopore -c bioconda pod5 samtools seqkit
 conda activate nanopore
 
 cd /path/to/scratch/dir/basecall/
