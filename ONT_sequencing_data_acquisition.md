@@ -31,7 +31,7 @@ Flowcells can be washed and reused using the [wash protocol](https://nanoporetec
 We have a P2 Solo, which can run 2 flowcells at once. This machine cost $25,000 so please be careful with it.
 
 ### Computer
-The computer is a powerful but finicky machine. This is mostly because of what we’re asking it to do. It has some of the latest Nvidia GPUs, but runs on the Ubuntu 22.04 OS. This causes some problems with the drivers and prevents live basecalling. We currently run the sequencer without basecalling (outputting pod5 raw data) and then basecall on Sherlock. This precludes analyses requiring adaptive sampling. We will update to Ubuntu 24.04 soon, which will hopefully solve these problems. We’ve been getting help from Eric Campbell from IT when the issues are too complex for us to address. The computer has a UPS which prevents restarts after short power interruption, which messes up the drivers, and also has a wired ethernet connection.
+The computer is a powerful but finicky machine. We currently run the sequencer outputting "fast" basecalls and pod5 raw data and then basecall with the "sup" models on Sherlock. We’ve been getting help from Eric Campbell from IT when the issues are too complex for us to address. Short power interruptions mess up the drivers, and the computer has a UPS which prevents restarts during temporary power outages. The UPS may make noise when oversubscribed. It also has a wired ethernet connection.
 
 **Note**: if you turn on the P2, but it doesn't light up and minknow doesn't see it, there might be a problem with the thunderbolt controller being enabled (BIOS menu). Restarting the computer might fix the issue.
 
@@ -40,7 +40,7 @@ The computer is a powerful but finicky machine. This is mostly because of what w
 ### File naming conventions
 MinKnow is fairly user friendly. Please name your experiment with the following convention:
 
-YEARMODY_INITIALS_KIT[LSK/RSK/ULK]_experiment (**eg 20250925_TOD_LSK_xbir-fiberseq-brain**)
+YEARMODY_INITIALS_KIT[LSK/RSK/ULK/NBD]_experiment (**eg 20250925_TOD_LSK_xbir-fiberseq-brain**)
 
 Then name the SAMPLE with the standard swordtail naming convention, plus “_KIT” (e.g.
 **xbir-COAC-S238-28-VIII-25-M01_LSK**)
@@ -49,7 +49,7 @@ You can join existing experiments too. This will allow you to sequence multiple 
 The 4TB or 2TB data drives can be used for temporary data storage while sequencing. Generally, 100Gb of bases = 1TB of data (pod5 files are heavy).
 
 ### Data upload to oak
-From the terminal on the computer, copy data to oak. This usually takes about an hour for a high coverage swordtail genome.
+From the terminal on the ONT computer, copy data to oak. This usually takes about an hour for a high coverage swordtail genome.
 ```
 scp -r /media/4tb-data/minknow/data/20250925_TOD_LSK_xbir-fiberseq-brain/xbir-COAC-S238-28-VIII-25-M01_LSK/ <sunetID>@dtn.sherlock.stanford.edu:/oak/stanford/groups/schumer/data/Nanopore_data/
 ```
@@ -59,16 +59,22 @@ Eventually, we will figure out a system to back up all pod5 files to elm or some
 On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free). By default, we filter the reads by q10 and length 5000bp in the fastq.gz.
 
 `dorado` is installed in shared_bin. Dependencies and other useful tools can be easily installed in a conda environment. Finally, download the superaccurate models.
+
+For firstime use, create your nanopore conda environment. This environment contains some other useful tools, like seqkit.
 ```
 conda create -n nanopore -c bioconda pod5 samtools seqkit
 conda activate nanopore
+```
 
+Basecalling should be done on scratch.
+```
 cd /path/to/scratch/dir/basecall/
 dorado download --model dna_r10.4.1_e8.2_400bps_sup@v5.0.0
 dorado download --model dna_r10.4.1_e8.2_400bps_sup@v5.0.0_5mCG_5hmCG@v3
 ```
+Each of the following scripts takes your `$sample_name` prefix as input. Shown below is an example using the prefix `xbir-COAC-S238-28-VIII-25-M01_LSK`. For each of the scripts, make sure to change the conda path to the environment you created above.
 
-Run basecalling (in parallel), merge the bam outputs, and convert the combined bam to a fastq.
+Run basecalling (in parallel), by default 25 chunks. This may take 1-2 days depending on sherlock queue.
 ```
 cd /path/to/scratch/dir/basecall/
 
@@ -77,14 +83,20 @@ ln -s /oak/stanford/groups/schumer/data/Nanopore_data/20250925_TOD_LSK_xbir-fibe
 cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_ont_basecall_dorado.sh .
 
 sbatch sub_ont_basecall_dorado.sh xbir-COAC-S238-28-VIII-25-M01_LSK
+```
 
+After basecalling is completed successfully (check slurm outputs), run the script that merges these bam outputs and convert the combined bam to a fastq.
+```
 cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_ont_basecall_merge.sh .
 
 sbatch sub_ont_basecall_merge.sh xbir-COAC-S238-28-VIII-25-M01_LSK
 ```
+
 After you basecall, please put the combined ubam and filtered fastq files in the nanopore directory in OAK.
 ```
-cp xbir-COAC-S238-28-VIII-25-M01_LSK.dorado9.1_sup@v5.0.0_CpG.q10.* /oak/stanford/groups/schumer/data/Nanopore_data/
+cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_ont_backup.sh .
+
+sbatch sub_ont_backup.sh xbir-COAC-S238-28-VIII-25-M01_LSK
 ```
 
 ### Analysis
