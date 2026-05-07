@@ -4,7 +4,9 @@
 
 The lab does 3 primary workflows to achieve high quality, near T2T assemblies:
 
-[Ligation Sequencing Kit](https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION): For standard ONT protocols. Low DNA input requirements (1ug in 48ul), moderate read lengths (20-40kb N50s), and high throughput. Library prep takes ½ day (requires several bead cleanups + time to resuspend) and 24 hours sequencing for a high coverage swordtail genome (~30-40Gb data). You can expect ~100-150ish Gb data off a flowcell if you do washes.
+[Modified Native Barcoding Kit](https://www.dropbox.com/scl/fi/8mv7hdt5gpka7jbku7615/barcoding_ligation-sequencing-gdna-native-sqk-nbd114-24_modified_TOD.pdf?rlkey=v2d1samz7415gd7rden2zjjme&st=nfogrkbb&dl=0): For cheap ($300) swordtail genomes (720Mb) at scale. Low DNA input requirements (1ug in 12ul), moderate read lengths (40kb N50s), and high throughput. Library prep takes ½ day for 4-8 samples, (requires several bead cleanups + time to resuspend) and a week of sequencing for 4 high coverage swordtail genomes (~100-120Gb data). You can expect ~100-150ish Gb data off a flowcell if you do washes. This is the preferred sequencing method for the lab.
+
+[Ligation Sequencing Kit](https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION): For standard ONT protocols. Low DNA input requirements (1ug in 48ul), moderate read lengths (40kb N50s), and high throughput. Library prep takes ½ day (requires several bead cleanups + time to resuspend) and 24 hours sequencing for a high coverage swordtail genome (~30-40Gb data). You can expect ~100-150ish Gb data off a flowcell if you do washes.
 
 [Rapid Sequencing Kit](https://nanoporetech.com/document/rapid-sequencing-sqk-rad114?device=PromethION): For quick and dirty sequencing. Very low DNA input requirements (100-150ng DNA in 10ul), moderate read lengths (10-25kb N50s), and low throughput. Library prep takes 1hr and 24 hours sequencing for a high coverage swordtail genome. You can expect ~50-80ish Gb data off a flowcell if you do washes. Ligation is generally preferred because more economical use of flowcells.
 
@@ -19,6 +21,10 @@ Kits are stored at -20C. We put most reagents in plastic tub boxes in the small 
 Flowcells are stored at 4C. Immediately after being received, flowcells should be checked. If they are below warranty (5000 pores), we can get a refund (this would save the lab $800). Immediately after being received, flowcells should also be logged on the spreadsheet (see #quick_links_lab_info).
 
 ## Sequencing
+
+### Shearing DNA
+DNA can be sheared with 26G blunt end needle to increase read lengths. This is recommended for native barcoding and ligation kits. It is important shearing is done before the end repair steps.
+
 ### Flowcell use
 While ONT says flowcells expire after 3 months, we’ve successfully sequenced using flowcells >1 year expired. The number of pores decreases over time, so try to use older flowcells first. Generally, a flowcell with >2000-3000 pores should sequence well. 500-2000 pores can be used for testing and troubleshooting, or for protocols where not as much data are needed (e.g. amplicon sequencing).
 
