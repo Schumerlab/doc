@@ -1399,19 +1399,14 @@ Long-read sequencing has changed the game! Shortreads (e.g. illumina), which are
 shortcomings in complex regions of the genome and assemblies based on this technology are fragmented and incomplete.
 
 PacBio HiFi (highly accurate [>99% accuracy] long reads [~10-20kb]) is a leading technology for genome assembly. While such single molecule sequencing is generally
-error prone (especially homopolymer INDELs), PacBio HiFi achieves >99% accuracy by reading the same molecule multiple times and taking the consensus. Oxford
-Nanopore reads, by contrast, are less accurate (>96-98% with the latest technology) but can be substantially longer (100s of kb to a few kb). Each technology has pros and
-cons, and are complementary rather than interchangeable, but we focus here on PacBio data.
+error prone (especially homopolymer INDELs), PacBio HiFi achieves >99.5% accuracy by reading the same molecule multiple times and taking the consensus. Oxford Nanopore reads, approach this accuracy (mean ~99.2%) but can be substantially longer (100s of kb to a few kb). Each technology has pros and cons, and are complementary rather than interchangeable, but we focus here on PacBio data.
 
-Sequencing companies may return the raw data, CCS data, or HiFi data in either bam (unaligned) or fastq format. HiFi reads (after a little processing) is the input for
-everything downstream. Raw data is massive and there is no real benefit to backing it up (after confirming the HiFi data are good).
+Sequencing companies may return the raw data, CCS data, or HiFi data in either bam (unaligned) or fastq format. HiFi reads (after a little processing) is the input for everything downstream. Raw data is massive and there is no real benefit to backing it up (after confirming the HiFi data are good).
 
 ### Resources
-We generally use the hifi assembler hifiasm, which is the industry standard for highly accurate, contiguous, phased diploid assemblies. HiFiasm can also integrate, parental
-short-read, HiC and ONT data collected from the same individual as well to increase contiguity and phasing performance.
+We generally use the hifi assembler hifiasm, which is the industry standard for highly accurate, contiguous, phased diploid assemblies. HiFiasm can also integrate, parental short-read, HiC and ONT data collected from the same individual as well to increase contiguity and phasing performance.
 
-HiFiasm Paper: Cheng, H., Concepcion, G.T., Feng, X., Zhang, H., Li H. (2021) Haplotype-resolved de novo assembly using phased assembly graphs with hifiasm. Nat
-Methods, 18:170-175. https://doi.org/10.1038/s41592-020-01056-5
+HiFiasm Paper: Cheng, H., Concepcion, G.T., Feng, X., Zhang, H., Li H. (2021) Haplotype-resolved de novo assembly using phased assembly graphs with hifiasm. Nat Methods, 18:170-175. https://doi.org/10.1038/s41592-020-01056-5
 
 HiFiasm docs: https://hifiasm.readthedocs.io/en/latest/index.html
 
