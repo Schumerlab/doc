@@ -24,7 +24,7 @@
 - 6.1 [Interacting with SLURM](#Interacting-with-SLURM)
 - 6.2 [Sending submission scripts to the scheduler](#Sending-submission-scripts-to-the-scheduler)
 - 6.3 [Monitoring your job while it runs](#Monitoring-your-job-while-it-runs)
-- 6.4 [Need to delete a job (#Need-to-delete-a-job)
+- 6.4 [Need to delete a job] (#Need-to-delete-a-job)
 - 6.5 [Interactively log on to a node](#Interactively-log-on-to-a-node)
 - 7.1 [Transferring Files](#Transferring-Files)
 - 8.1 [Software Installation and Modules](#Software-Installation-and-Modules)
