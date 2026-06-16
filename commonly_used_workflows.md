@@ -1748,6 +1748,36 @@ Generate synteny blocks, useful for looking at genomic rearrangements:
 
 `/home/groups/schumer/tools/hal/bin/halSynteny xip_complete.hal`
 
+## Genome annotation using LiftOn
+
+Gene annotation is a challenge for non-model organisms. We've tried several workflows in the past (including outsourcing to collaborators). One current solution we've landed on is using the software LiftOn[https://github.com/Kuanhao-Chao/LiftOn], which combines standard LiftOff with MiniProt to increase accuracy. Since the genome of X. maculatus is well-annotated using the "gold standard" NCBI pipeline, we use these annotations. This pipeline takes ~2 hours per genome.
+
+**Note:** Our increasing collection of Kinnex-seq data will change the game for annotatation. LiftOn is not the final word for annotation, but it is quick, easy, and seems to be the most accurate option we've tried.
+
+### installation
+
+```
+#install lifton on the cluster. a specific conda environment with all the tools you may use for gff manipulation is a nice solution. note, lifton requires python >= 3.8.0
+
+conda create --name annotation python=3.8.5
+conda activate annotation
+
+#install lifton with pip
+pip install liftOn
+
+#install other useful tools (recommended)
+conda install seqkit
+conda install agat
+```
+
+### running LiftOn in batches
+The following script will use LiftOn to annotate a haploid genome using the X. maculatus 5.0 annotations. It takes 1 argument: the name of the fasta you want to annotate.
+```
+cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_annotate_lifton.sh .
+
+sbatch sub_annotate_lifton.sh xnez-PTES-S146-07-VI-25-F01_v2025.1.fa
+```
+
 ## Demographic Inference with ABC
 
 We can estimate hybridization timing, population size, ancestry proportion, and parental migration rates with Approximate Bayesian Computation (ABC) simulating a single
