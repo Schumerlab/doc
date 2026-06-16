@@ -49,12 +49,13 @@ Please add more workflows and pipelines as you develop them!
 27. [Motif and binding site predictions](#motif-and-binding-site-predictions)
 28. [Liftovers using cactus alignments](#liftovers-using-cactus-alignments)
     - 28.1 [Other useful basic commands with halTools](#other-useful-basic-commands-with-haltools)
-29. [Demographic Inference with ABC](#demographic-inference-with-abc)
-    - 29.1 [Simulations setup](#simulations-setup)
-    - 29.2 [Post simulations population specific inference](#post-simulations-population-specific-inference)
-30. [Demographic Inference with PSMC](#demographic-inference-with-psmc)
-    - 30.1 [plotting PSMC output](#plotting-psmc-output)
-31. [Building a recombination map with LDhelmet](#building-a-recombination-map-with-ldhelmet)
+29. [Genome annotation using LiftOn](#genome-annotation-using-lifton)
+30. [Demographic Inference with ABC](#demographic-inference-with-abc)
+    - 30.1 [Simulations setup](#simulations-setup)
+    - 30.2 [Post simulations population specific inference](#post-simulations-population-specific-inference)
+31. [Demographic Inference with PSMC](#demographic-inference-with-psmc)
+    - 31.1 [plotting PSMC output](#plotting-psmc-output)
+32. [Building a recombination map with LDhelmet](#building-a-recombination-map-with-ldhelmet)
 
 ## Parsing Illumina data - Tn5 libraries
 Note: this content is also in dropbox in the guide called "parsing_tn5_data.txt"
@@ -1750,12 +1751,12 @@ Generate synteny blocks, useful for looking at genomic rearrangements:
 
 ## Genome annotation using LiftOn
 
-Gene annotation is a challenge for non-model organisms. We've tried several workflows in the past (including outsourcing to collaborators). One current solution we've landed on is using the software LiftOn[https://github.com/Kuanhao-Chao/LiftOn], which combines standard LiftOff with MiniProt to increase accuracy. Since the genome of X. maculatus is well-annotated using the "gold standard" NCBI pipeline, we use these annotations. This pipeline takes ~2 hours per genome.
+Gene annotation is a challenge for non-model organisms. We've tried several workflows in the past (including outsourcing to collaborators). One current solution we've landed on is using the software [LiftOn](https://github.com/Kuanhao-Chao/LiftOn), which combines standard LiftOff with MiniProt to increase accuracy. Since the genome of X. maculatus is well-annotated using the "gold standard" NCBI pipeline, we use these annotations. This pipeline takes ~2 hours per genome.
 
 **Note:** Our increasing collection of Kinnex-seq data will change the game for annotatation. LiftOn is not the final word for annotation, but it is quick, easy, and seems to be the most accurate option we've tried.
 
 ### installation
-
+If this fails, run installation as a slurm job.
 ```
 #install lifton on the cluster. a specific conda environment with all the tools you may use for gff manipulation is a nice solution. note, lifton requires python >= 3.8.0
 
@@ -1771,7 +1772,7 @@ conda install agat
 ```
 
 ### running LiftOn in batches
-The following script will use LiftOn to annotate a haploid genome using the X. maculatus 5.0 annotations. It takes 1 argument: the name of the fasta you want to annotate.
+The following script will use LiftOn to annotate a haploid genome using the X. maculatus 5.0 annotations. It takes 1 argument: the name of the fasta you want to annotate. Takes about 2 hours.
 ```
 cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_annotate_lifton.sh .
 
