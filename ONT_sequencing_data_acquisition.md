@@ -34,7 +34,7 @@ Flowcells are stored at 4C. Immediately after being received, flowcells should b
 DNA can be sheared with 26G needle to increase read lengths using [this protocol](https://www.dropbox.com/scl/fi/q6kcetxz1jdq770b714pc/ONT_26Gneedle_shearing_protocol.txt?rlkey=c4d726o9ti0hyr15xduvb0q3m&st=togbsvow&dl=0). This is recommended for native barcoding and ligation kits. It is essential that any shearing is done before the end repair steps.
 
 ### Cleaning up fragmented DNA (optional)
-When we can, we extract from homogeneous and nuclei rich tissues (brain, testes, spleen), and in these cases a cleanup is unnecessary. If DNA is of low quality, eg from muscle tissue or whole-head extraction, you can try removing small fragments up with PacBio's SRE XL kit. In our hands, you lose a lot of DNA, and this kit is unreliable so use at your own risk! Make sure to elute in a small volume (e.g. 50ul).
+When we can, we extract from homogeneous and nuclei rich tissues (brain, testes, spleen), and in which case a cleanup is usually unnecessary. If DNA is of low quality, eg from muscle tissue or whole-head extraction, you can try removing small fragments up with PacBio's SRE XL kit. In our hands, you lose a lot of DNA, and this kit is unreliable so use at your own risk! Make sure to elute in a small volume (e.g. 50ul).
 
 ### Flowcell use
 Pore count in each flowcell goes down over time. While ONT says flowcells expire after 3 months, we’ve successfully sequenced using flowcells >1 year expired. Try to use older flowcells first. If you need high throughput (eg 4 samples on a Native Barcoding Kit run), use flowcells with >7000 pores. Generally, a flowcell with >2000-3000 pores should sequence well for single samples. 500-2000 pores can be used for testing and troubleshooting, or for protocols where not as much data are needed (e.g. amplicon sequencing).
@@ -63,6 +63,8 @@ ONT sequencing takes some practice and is not guaranteed to work the first time!
 **Note**: to maximize throughput, it is preferable to do start ONT library prep on a Monday so that you can sequence and do washes later in the week.
 
 **Note**: the flowcell is **by far** the most expensive component of ONT sequencing at ~$1000. If you are not confident that your library prep worked, you should NOT use a new flowcell to sequence. Either take the L and redo the prep or sequence on a half-used flowcell. If you are hesitant about your read lengths, you can tapestation the final library to get a sense, but even then the read lengths are often much less than the tapestation peak.
+
+**Note**: check on your run ~1hr after you put it on the sequencer. When sequencing stabilizes after 30-60min, read lengths and throughput should be indicative of what you’ll get for the whole run. At this point, if your data don’t look good (eg N50 under 10-20kb or <1.5Gb data generated, depending on experiment), the run should be stopped and flowcell immediately washed to conserve the resources. Therefore, unless you want to stay late, sequencing runs should be started before 3pm to allow for 1hr of observation and for 1hr of wash.
 
 **Note**: for the barcoding protocol, all input DNA must be of similar high quality (e.g. NEB Monarch extraction from brain tissue). It will not work if you combine tissues (e.g. muscle & brain). Even if you use the same tissues, QC on HMW DNA can be inaccurate and pooling can sometimes still be uneven. We are working on getting adaptive sampling by barcode to work.
 
