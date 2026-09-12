@@ -2,15 +2,15 @@
 
 ## Background
 
-Oxford Nanopore Technologies (ONT) is a leading long-read sequencing platform. Having an ONT sequencer in lab is a huge privilage that gives us great flexibility and power. Currently, the groups's main use for ONT is generating high coverage (>30x) long-read data for whole-genome assemblies. The documentation below focuses on this use case, with some digressions. Additional details and annotated protocols can be found in `~/Swordtail\ Dropbox/Schumer_lab_resources/Protocols/nanopore`
+Oxford Nanopore Technologies (ONT) is a leading long-read sequencing platform. Having an ONT sequencer in lab is a huge privilege that gives us great flexibility and power. Currently, the groups's main use for ONT is generating high coverage (>30x) long-read data for whole-genome assemblies. The documentation below focuses on this use case, with some digressions. Additional details and annotated protocols can be found in `~/Swordtail\ Dropbox/Schumer_lab_resources/Protocols/nanopore` and the `ONT_flowcell_log` spreadsheet (in #quick_links_lab_info).
 
-To generate near-T2T assemblies at low cost and high throughput, the lab primarily uses a Modified Native Barcoding workflow.
+To generate near-T2T assemblies at low cost and decent throughput, the lab primarily uses a Modified Native Barcoding workflow with 1-2 flowcell washes.
 
-[Modified Native Barcoding Kit (NBD)](https://www.dropbox.com/scl/fi/8mv7hdt5gpka7jbku7615/barcoding_ligation-sequencing-gdna-native-sqk-nbd114-24_modified_TOD.pdf?rlkey=v2d1samz7415gd7rden2zjjme&st=nfogrkbb&dl=0): For cheap ($300) near-T2T swordtail genomes (720Mb) at scale. Low DNA input requirements (1ug in 12ul), moderate read lengths (40kb N50s), and high throughput. Library prep takes ½ day for 4-8 samples, (requires several bead cleanups + time to resuspend) and a week of sequencing for 4 high coverage swordtail genomes per flowcell. You can expect ~100-120ish Gb data off a new flowcell if you do washes. This is the preferred sequencing workflow for the lab.
+[Modified Native Barcoding Kit (NBD)](https://www.dropbox.com/scl/fi/8mv7hdt5gpka7jbku7615/barcoding_ligation-sequencing-gdna-native-sqk-nbd114-24_modified_TOD.pdf?rlkey=v2d1samz7415gd7rden2zjjme&st=nfogrkbb&dl=0): For cheap ($300) near-T2T swordtail genomes (720Mb) at scale. Low DNA input requirements (1ug in 12ul), moderate read lengths (40kb N50s), and high throughput. Library prep takes ½ day for 4-8 samples, (requires several bead cleanups + time to resuspend) and a week of sequencing for 4 high coverage swordtail genomes per flowcell. You can expect ~100-120ish Gb data off a new flowcell if you do washes. This is the preferred sequencing workflow for the lab, and uses up the entire flowcell over the week.
 
 The lab also uses the following 3 kits with some frequency, but these have drawbacks in terms of cost and effort, although they may be appropriate for some specific usecases (e.g., involving extremely high coverage, extremely long-reads, or when quick results are needed).
 
-[Ligation Sequencing Kit (LSK)](https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION): For standard ONT protocols. Low DNA input requirements (2ug in 48ul), moderate read lengths (40kb N50s), and high throughput. Library prep takes ½ day (requires several bead cleanups + time to resuspend) and 16-24 hours sequencing for a single high coverage swordtail genome (~30-40Gb data). You can expect ~100-120ish Gb data off a new flowcell if you do washes.
+[Ligation Sequencing Kit (LSK)](https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION): For standard ONT protocols. Low DNA input requirements (2ug in 48ul), moderate read lengths (40kb N50s), and high throughput. Library prep takes ½ day (requires several bead cleanups + time to resuspend) and 16-24 hours sequencing for a single high coverage swordtail genome (~30-40Gb data). You can expect ~100-120ish Gb data off a new flowcell if you do washes. NBD is preferred because half-used flowcells from single LSK genomes tend to sit in the fridge for months and never be used up.
 
 [Rapid Sequencing Kit (RSK)](https://nanoporetech.com/document/rapid-sequencing-sqk-rad114?device=PromethION): For quick and dirty sequencing. Very low DNA input requirements (100-150ng DNA in 10ul), moderate read lengths (10-25kb N50s), and low throughput. Library prep takes 1hr and 24 hours sequencing for a high coverage swordtail genome. You can expect ~50-80ish Gb data off a new flowcell if you do washes. Ligation is generally preferred because more economical use of flowcells.
 
@@ -31,23 +31,40 @@ Flowcells are stored at 4C. Immediately after being received, flowcells should b
 ## Sequencing
 
 ### Shearing DNA
-DNA can be sheared with 26G needle to increase read lengths. This is recommended for native barcoding and ligation kits. It is essential that any shearing is done before the end repair steps.
+DNA can be sheared with 26G needle to increase read lengths using [this protocol](https://www.dropbox.com/scl/fi/q6kcetxz1jdq770b714pc/ONT_26Gneedle_shearing_protocol.txt?rlkey=c4d726o9ti0hyr15xduvb0q3m&st=togbsvow&dl=0). This is recommended for native barcoding and ligation kits. It is essential that any shearing is done before the end repair steps.
+
+### Cleaning up fragmented DNA (optional)
+When we can, we extract from homogeneous and nuclei rich tissues (brain, testes, spleen), and in these cases a cleanup is unnecessary. If DNA is of low quality, eg from muscle tissue or whole-head extraction, you can try removing small fragments up with PacBio's SRE XL kit. In our hands, you lose a lot of DNA, and this kit is unreliable so use at your own risk! Make sure to elute in a small volume (e.g. 50ul).
 
 ### Flowcell use
 Pore count in each flowcell goes down over time. While ONT says flowcells expire after 3 months, we’ve successfully sequenced using flowcells >1 year expired. Try to use older flowcells first. If you need high throughput (eg 4 samples on a Native Barcoding Kit run), use flowcells with >7000 pores. Generally, a flowcell with >2000-3000 pores should sequence well for single samples. 500-2000 pores can be used for testing and troubleshooting, or for protocols where not as much data are needed (e.g. amplicon sequencing).
 
-### Flowcell reuse
-Flowcells can be washed and reused using the [wash protocol](https://nanoporetech.com/document/flow-cell-wash-kit-exp-wsh004?device=PromethION). After wash + storage buffer, but before putting in fridge, run a flowcell check and add a sticker with the number of remaining pores. Also, **fill out the flowcell spreadsheet** (find on #quick_links_lab_info channel or bookmarked on ONT computer). We save and reuse flowcells with > 500 pores. Flowcells should be stored in the storage bags in the 4C.
+### Flowcell washes
+Throughput declines over time, and craters after about 2 days. To increase throughput, the flowcell can be washed using the [wash protocol](https://nanoporetech.com/document/flow-cell-wash-kit-exp-wsh004?device=PromethION) to resurrect pores that become clogged. Before washing, you can remove your library, store it on ice during the 1hr wash, and reload it after the wash. A new library can also be prepped and  loaded, but it saves a lot of time/effort/money to just reload the old library. Reloading the same library does not appear to affect read lengths and is highly recommended!
 
-**Note**: the DNAse in the washmix gets rid of 99.9% of old DNA. Not all analyses will be sensitive to contaminant DNA, but if yours are (eg genome assembly), consider either barcoding your sample or using an old flowcell that previously sequenced a diverged species (eg northern swordtail vs platyfish). With this level of divergence (2%), it should be very easy identify contaminant reads. More closely related species can be used too, but we recommend not using the same species. A formal de-contamination pipeline is in the works.
+### Flowcell storage and reuse
+Flowcells can be washed, stored, and reused using the [wash protocol](https://nanoporetech.com/document/flow-cell-wash-kit-exp-wsh004?device=PromethION). After wash + storage buffer, but before putting in fridge, run a flowcell check and add a sticker with the number of remaining pores. Also, **PLEASE FILL OUT THE FLOWCELL SPREADSHEET** (find on #quick_links_lab_info channel or bookmarked on ONT computer). We save and reuse flowcells with > 500 pores. Flowcells should be stored in the storage bags in the 4C. 
+
+**Note**: the DNAse in the washmix gets rid of 99.9% of old DNA. Not all analyses will be sensitive to contaminant DNA, but if yours are (eg sperm de novo SV calling), consider either barcoding your sample. If using an old flowcell, you can select one where a diverged species was sequenced (eg northern swordtail vs platyfish). With this level of divergence (2%), it should be easier to identify contaminant reads. More closely related species can be used too, but we recommend not using the same species. A formal de-contamination pipeline is envisioned but not actively under development.
+
+**Note**: please NEVER put an unwashed flowcell in the fridge — we do not know how this affects storage and contamination between runs. please also ALWAYS run a flowcell check before storing the flowcell.
 
 ### P2 Solo 
 We have a P2 Solo, which can run 2 flowcells at once. This machine cost $25,000 so please be careful with it.
 
 ### Computer
-The computer is a powerful but finicky machine. We’ve been getting help from Eric Campbell from IT when the issues are too complex for us to address. Short power interruptions mess up the drivers, and the computer has a UPS which prevents restarts during temporary power outages. The UPS may make noise when oversubscribed (happens most often during porescans). We are trying to figure out a way to turn off the alarm. It also has a wired ethernet connection.
+The computer is a powerful but finicky machine. We’ve been getting help from Eric Campbell from IT when the issues are too complex for us to address. Short power interruptions mess up the drivers, and the computer has a UPS which prevents restarts during temporary power outages. The UPS may make noise when oversubscribed (happens most often during porescans). It also has a wired ethernet connection.
 
 **Note**: if you turn on the P2, but it doesn't light up and MinKNOW doesn't see it, there might be a problem with the thunderbolt controller being enabled (BIOS menu). Restarting the computer usually fixes the issue.
+
+### Troubleshooting
+ONT sequencing takes some practice and is not guaranteed to work the first time! Check out this [research update](https://www.dropbox.com/scl/fi/tv781ooqqr2gs4i6z9v4l/20260508_research_update_ont.pptx?rlkey=vcp3h50rr2q3hy2qp55ava0tk&st=azexkqwd&dl=0) on ONT sequencing and troubleshooting, focusing on the NBD protocol.
+
+**Note**: to maximize throughput, it is preferable to do start ONT library prep on a Monday so that you can sequence and do washes later in the week.
+
+**Note**: the flowcell is **by far** the most expensive component of ONT sequencing at ~$1000. If you are not confident that your library prep worked, you should NOT use a new flowcell to sequence. Either take the L and redo the prep or sequence on a half-used flowcell. If you are hesitant about your read lengths, you can tapestation the final library to get a sense, but even then the read lengths are often much less than the tapestation peak.
+
+**Note**: for the barcoding protocol, all input DNA must be of similar high quality (e.g. NEB Monarch extraction from brain tissue). It will not work if you combine tissues (e.g. muscle & brain). Even if you use the same tissues, QC on HMW DNA can be inaccurate and pooling can sometimes still be uneven. We are working on getting adaptive sampling by barcode to work.
 
 
 ## Data acquisition and management
