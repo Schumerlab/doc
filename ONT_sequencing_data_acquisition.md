@@ -82,7 +82,8 @@ Then name the SAMPLE with the standard swordtail naming convention, plus “_KIT
 **xbir-COAC-S238-28-VIII-25-M01_LSK**)
 
 You can join existing experiments too. This will allow you to sequence multiple samples/ individuals in the same project, which will keep OAK less cluttered.
-The 4TB or 2TB data drives can be used for temporary data storage while sequencing. Generally, 100Gb of bases = 1TB of data (pod5 files are heavy).
+
+The 4TB or 2TB data drives can be used for temporary data storage while sequencing. Before you start sequencing, check to make sure you have enough space for your upcoming run. Generally, 100Gb of bases = 1TB of data (pod5 files are heavy).
 
 ### Live basecalling in MinKNOW
 
@@ -99,6 +100,7 @@ Eventually, we will figure out a system to back up all pod5 files to elm or some
 
 **Note**: at this point you can delete the bam_pass and bam_fail folders
 
+**Note**: after you upload your data to $OAK, please **DELETE IT OFF THE SEQUENCING COMPUTER**. This is important to ensuring experiments don't terminate prematurely.
 
 ### Basecalling on the cluster for single samples
 On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free). By default, we filter the reads by q10 and length 5000bp in the fastq.gz.
