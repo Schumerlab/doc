@@ -100,7 +100,10 @@ Eventually, we will figure out a system to back up all pod5 files to elm or some
 
 **Note**: at this point you can delete the bam_pass and bam_fail folders
 
-**Note**: after you upload your data to $OAK, please **DELETE IT OFF THE SEQUENCING COMPUTER**. This is important to ensuring experiments don't terminate prematurely.
+**Note**: after you upload your data to $OAK, please **DELETE IT OFF THE SEQUENCING COMPUTER**. This is important to ensuring experiments don't terminate prematurely. **MAKE SURE YOU ARE DELETING THE CORRECT DIRECTORY**
+```
+rm -r /media/4tb-data/MinKNOW/data/20250925_TOD_LSK_xbir-fiberseq-brain/ 
+```
 
 ### Basecalling on the cluster for single samples
 On sherlock, we run the dorado basecaller in the super accuracy mode (with modified bases enabled if PCR-free). By default, we filter the reads by q10 and length 5000bp in the fastq.gz.
@@ -140,7 +143,7 @@ cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_ont_basecall_merge.sh 
 sbatch sub_ont_basecall_merge.sh xbir-COAC-S238-28-VIII-25-M01_LSK
 ```
 
-After you basecall, please put the combined ubam and filtered fastq files in the nanopore_data directory in $OAK.
+After you basecall, please put the combined ubam and filtered fastq files in the nanopore_data directory in $OAK by running the backup script with your sample prefix.
 ```
 cp /home/groups/schumer/shared_bin/Lab_shared_scripts/sub_ont_backup.sh .
 
