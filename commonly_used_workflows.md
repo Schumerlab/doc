@@ -1380,7 +1380,7 @@ SortedByCoordinate`
 
 ### Mapping to a genome (updated and all-inclusive)
 With the quality of our current assemblies and lifton generated annotations (see LiftOn section below), mapping to a genome with a splice-aware aligner is the best practice. STAR is the current gold standard aligner for both bulk RNAseq and sc/snRNAseq data.
-## create a star conda environment
+#### create a star conda environment
 ```
 conda create -n star
 conda activate star
@@ -1390,7 +1390,7 @@ conda deactivate star
 #for more info on star, view the documentation: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
 ```
 
-## locate the reference genome and annotations you want to use
+#### locate the reference genome and annotations you want to use
 ```{bash}
 # the STAR manual recommends you create a new genome+annotation folder for each reference genome you are interested in; in this example, we are using birchmanni as our reference
 # create a new empty folder for these reference files
@@ -1400,7 +1400,7 @@ mkdir -p $MY_SCRATCH/genome_links/birchmanni_star/
 # copy your reference genome and lifton annotation (see section on lifton below) to this folder
 ```
 
-## example script to create a star index for your reference genome
+#### example script to create a star index for your reference genome
 ```
 # star recommends that you create the star index in an empty folder
 # set commonly used files to variables to make code easier to read
@@ -1431,7 +1431,7 @@ STAR \
 date
 ```
 
-## create links of raw data in $OAK to wd
+#### create links of raw data in $OAK to wd
 ```{bash}
 # create a working directory for the project and then a subdirectory for raw data
 mkdir -p $MY_SCRATCH/RNAseq/
@@ -1446,7 +1446,7 @@ ln -s $q .;
 done
 ```
 
-## check sequence QC, trimm adapters from RNAseq data, check QC again post-trimm
+#### check sequence QC, trimm adapters from RNAseq data, check QC again post-trimm
 ```
 #run fastqc before trimming and create necessary subfolders
 cd $MY_SCRATCH/RNAseq/raw_data
@@ -1496,7 +1496,7 @@ echo "finish fastqc post-trimm"
 date
 ```
 
-## basic star slurm mapping and gene count quantification script
+#### basic star slurm mapping and gene count quantification script
 ```{bash}
 # run star on chosen sample
 ref_dir=$MY_SCRATCH/genome_links/birchmanni_star/
@@ -1531,7 +1531,7 @@ STAR \
 date
 ```
 
-## an equivalent script for SE reads
+#### an equivalent script for SE reads
 ```
 STAR \
 -- runMode alignReads \
