@@ -1377,6 +1377,176 @@ genomeFastaFiles genome.fa --runThreadN 2 --sjdbGTFfile file.gtf --sjdbOverhang 
 reads2.fq.gz --readFilesCommand zcat --outFileNamePrefix name_prefix --runThreadN 10 --outSAMtype BAM
 SortedByCoordinate`
 
+### Mapping to a genome (updated and all-inclusive)
+With the quality of our current assemblies and lifton generated annotations (see LiftOn section below), mapping to a genome with a splice-aware aligner is the best practice. STAR is the current gold standard aligner for both bulk RNAseq and sc/snRNAseq data.
+## create a star conda environment
+```
+conda create -n star
+conda activate star
+conda install bioconda::star
+conda deactivate star
+
+#for more info on star, view the documentation: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+```
+
+## locate the reference genome and annotations you want to use
+```{bash}
+# the STAR manual recommends you create a new genome+annotation folder for each reference genome you are interested in; in this example, we are using birchmanni as our reference
+# create a new empty folder for these reference files
+mkdir -p $MY_SCRATCH/genome_links
+mkdir -p $MY_SCRATCH/genome_links/birchmanni_star/
+
+# copy your reference genome and lifton annotation (see section on lifton below) to this folder
+```
+
+## example script to create a star index for your reference genome
+```
+# star recommends that you create the star index in an empty folder
+# set commonly used files to variables to make code easier to read
+ref_dir=$MY_SCRATCH/genome_links/birchmanni_star/
+ref=$MY_SCRATCH/genome_links/birchmanni_star/xbir-COAC-16-VIII-22-M_v2023.1.fa
+ref_gtf=$MY_SCRATCH/genome_links/birchmanni_star/xbir-COAC-16-VIII-22-M_v2023.1_lifton_xmac5.0.gff
+cpu=16
+
+# activate star environment
+conda activate star
+
+cd ${ref_dir}
+
+date
+
+# run star index
+STAR \
+--runThreadN ${cpu} \
+--runMode genomeGenerate \
+--genomeDir ${ref_dir} \
+--genomeFastaFiles ${ref} \
+--sjdbGTFfile ${ref_gtf} \
+--genomeSAindexNbases 13
+
+# you may get this warning when running with default setting depending on the size of your reference genome
+# !!!!! WARNING: --genomeSAindexNbases 14 is too large for the genome size=704321165, which may cause seg-fault at the mapping step. Re-run genome generation with recommended --genomeSAindexNbases 13
+
+date
+```
+
+## create links of raw data in $OAK to wd
+```{bash}
+# create a working directory for the project and then a subdirectory for raw data
+mkdir -p $MY_SCRATCH/RNAseq/
+mkdir -p $MY_SCRATCH/RNAseq/raw_data
+
+cd $MY_SCRATCH/RNAseq/raw_data
+
+# this example uses the natural malbir hybrid data; I recommend linking to the data in your scratch directory because the raw_data links will survive the scratch purge and will not use storage space
+for q in `ls /oak/stanford/groups/schumer/data/RNAseq_data/Sc_RNAseq_data_CHAF_COAC/`;
+do echo $q; 
+ln -s $q .;
+done
+```
+
+## check sequence QC, trimm adapters from RNAseq data, check QC again post-trimm
+```
+#run fastqc before trimming and create necessary subfolders
+cd $MY_SCRATCH/RNAseq/raw_data
+mkdir -p $MY_SCRATCH/RNAseq/fastqc_pre-trimm
+mkdir -p $MY_SCRATCH/RNAseq/fastqc_pre-trimm/sample_fqc-out/
+mkdir -p $MY_SCRATCH/RNAseq/post-trimm/fastqc_post-trimm/sample_fqc-out/
+
+#load relevant modules
+module load biology
+module load fastqc/0.11.8
+
+date
+echo "begin fastqc pre-trimm"
+
+#forward
+fastqc -t 4 -o $MY_SCRATCH/RNAseq/fastqc_pre-trimm/sample_fqc-out/ \
+-f fastq sample.R1.fastq.gz
+
+#reverse
+fastqc -t 4 -o $MY_SCRATCH/RNAseq/fastqc_pre-trimm/sample_fqc-out/ \
+-f fastq sample.R2.fastq.gz
+date
+
+echo "finish fastqc pre-trimm"
+
+echo "begin trimmomatic"
+#trimmomatic handles gzipped input and output directly
+java -jar /home/groups/schumer/shared_bin/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 8 -phred33 \
+-trimlog $MY_SCRATCH/RNAseq/post-trimm/trimm-logs/sample_trimm.log \
+$MY_SCRATCH/RNAseq/raw_data/sample.R1.fastq.gz $MY_SCRATCH/RNAseq/raw_data/sample.R2.fastq.gz \
+$MY_SCRATCH/RNAseq/post-trimm/paired/sample_1.paired.fq.gz \
+$MY_SCRATCH/RNAseq/post-trimm/unpaired/sample_1.unpaired.fq.gz \
+$MY_SCRATCH/RNAseq/post-trimm/paired/sample_2.paired.fq.gz  \
+$MY_SCRATCH/RNAseq/post-trimm/unpaired/sample_2.unpaired.fq.gz \
+ILLUMINACLIP:/path_to_trimmomatic_formatted_adapters/TruSeq3-PE_14Apr25.fa:2:30:10 LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:36
+date
+
+echo "begin fastqc post-trimm"
+
+fastqc -t 8 -o $MY_SCRATCH/RNAseq/post-trimm/fastqc_post-trimm/sample_fqc-out/ \
+-f fastq $MY_SCRATCH/RNAseq/post-trimm/paired/sample_1.paired.fq.gz
+fastqc -t 8 -o $MY_SCRATCH/RNAseq/post-trimm/fastqc_post-trimm/sample_fqc-out/ \
+-f fastq $MY_SCRATCH/RNAseq/post-trimm/paired/sample_2.paired.fq.gz
+
+echo "finish fastqc post-trimm"
+
+date
+```
+
+## basic star slurm mapping and gene count quantification script
+```{bash}
+# run star on chosen sample
+ref_dir=$MY_SCRATCH/genome_links/birchmanni_star/
+ref=$MY_SCRATCH/genome_links/birchmanni_star/xbir-COAC-16-VIII-22-M_v2023.1.fa
+ref_gtf=$MY_SCRATCH/genome_links/birchmanni_star/xbir-COAC-16-VIII-22-M_v2023.1_lifton_xmac5.0.gtf
+
+base_dir=$MY_SCRATCH/RNAseq/post-trimm/
+cpu=16
+read_base=$MY_SCRATCH/RNAseq/post-trimm/paired
+sample=5-xvar-JUCH-28-XI-23-M-05-WT-RNAseq
+
+mkdir -p ${base_dir}/post-star
+
+conda activate star
+
+cd ${base_dir}/post-star
+
+date
+
+STAR \
+-- runMode alignReads \
+--runThreadN ${cpu} \
+--genomeDir ${ref_dir} \
+--readFilesCommand zcat \
+--readFilesIn ${read_base}/${sample}_1.paired.fq.gz ${read_base}/${sample}_2.paired.fq.gz \
+--outFileNamePrefix ${sample}_ \
+--outSAMtype BAM SortedByCoordinate \
+--quantMode GeneCounts
+
+# --sjdbGTFtagExonParentTranscript Parent
+
+date
+```
+
+## an equivalent script for SE reads
+```
+STAR \
+-- runMode alignReads \
+--runThreadN ${cpu} \
+--genomeDir ${ref_dir} \
+--readFilesCommand zcat \
+--readFilesIn ${read_base}/${sample}.single.fq.gz \
+--outFileNamePrefix ${sample}_ \
+--outSAMtype BAM SortedByCoordinate \
+--quantMode GeneCounts
+
+date
+```
+
+You can now take these 'ReadsPerGene.out.tab' files directly into R for differential expression analysis. There are four columns: gene_name, counts assuming unstranded library prep, counts for first read strand, and counts for second read strand. You want to pick which of columns two, three, or four match your library prep method.
+
 ## Transcript quantification
 
 There are lots of options for expression quantification and testing for differential expression after you have generated bam files. Some recommended tools include:
