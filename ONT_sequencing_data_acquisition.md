@@ -89,6 +89,11 @@ The 4TB or 2TB data drives can be used for temporary data storage while sequenci
 
 On the ONT computer, we usually use MinKNOW to run dorado the "fast" models (with no base modifications specified). Doing live basecalling is useful because it allows you to do adaptive sampling and track barcode abundances in real time. It is absolutely **essential** that you also output the raw pod5 files and later basecall with the "sup" models on Sherlock (with base modifications) for final data analysis. Again, **these fast basecalls should almost NEVER be used for downstream analysis**.
 
+After your run is complete, to avoid confusion please delete the basecalls off the sequencing computer, before you upload to $OAK
+```
+rm -rf 20250925_TOD_LSK_xbir-fiberseq-brain/*/*/bam_*/ 20250925_TOD_LSK_xbir-fiberseq-brain/*/*/fastq_*/
+```
+
 **Note**: Information about what basecalling model was used can be found in the ubam tags. Check these tags if you are ever unsure about how the data were generated.
 
 ### Data upload to $OAK
@@ -97,8 +102,6 @@ From the terminal on the ONT computer, copy the experiment to $OAK. This usually
 scp -r /media/4tb-data/MinKNOW/data/20250925_TOD_LSK_xbir-fiberseq-brain/ <sunetID>@dtn.sherlock.stanford.edu:/oak/stanford/groups/schumer/data/Nanopore_data/
 ```
 Eventually, we will figure out a system to back up all pod5 files to elm or some other long-term storage.
-
-**Note**: at this point you can delete the bam_pass and bam_fail folders
 
 **Note**: after you upload your data to $OAK, please **DELETE IT OFF THE SEQUENCING COMPUTER**. This is important to ensuring experiments don't terminate prematurely. **MAKE SURE YOU ARE DELETING THE CORRECT DIRECTORY**
 ```
@@ -152,6 +155,9 @@ sbatch sub_ont_backup.sh xbir-COAC-S238-28-VIII-25-M01_LSK
 
 **Note**: if you're running a different workflow, like the native barcoding kit, there are some differences to the computational workflow and scripts, which are documented in `~/Swordtail\ Dropbox/Schumer_lab_resources/Protocols/nanopore/swordtail_barcoding_TOD/barcoding_xipho_analysis.txt`
 
+### Backing up pod5 files to $ELM
+
+Once your data are basecalled and in the ONT directory, please message Wei to let him know your POD5 files are good to be moved to ELM for cold storage. We keep the pod5 files in case we need to re-basecall the data with new models or with a new version of dorado.
 
 ### Analysis
 For genome assembly, the combined `<sample>.dorado9.1_sup@v5.0.0_CpG.q10.l5000.fastq.gz` file from basecalling can be used as input to `hifiasm` (with the `--ont` option specified). The assembly workflow from this point on is basically the same as with hifi data.
