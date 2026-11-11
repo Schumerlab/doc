@@ -123,5 +123,4 @@ Capital `X` adds execute only to directories (and files that are already executa
 | Make a script executable | `chmod +x script.sh` |
 | Standard file | `chmod 644 file` |
 | Standard directory / script | `chmod 755 dir` |
-| Share a whole folder with the lab | `chmod -R go+rX dir` |
-| Fix the group of a folder | `chgrp -R schumerlab dir` |
+| Share a whole folder with the lab | `chmod -R g+rX dir` |
